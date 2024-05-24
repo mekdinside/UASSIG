@@ -9,15 +9,6 @@
 <!-- <link rel="stylesheet" type="text/css" href="{% static 'leaflet-search-master/src/leaflet-search.css' %}"> -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-search@2.9.0/dist/leaflet-search.min.css" />
 
-@push('scripts')
-<!-- Leaflet JavaScript -->
-<!-- Make sure you put this AFTER Leaflet's CSS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-  crossorigin="">
-</script>
-@endpush
-
     <style>
       #mapid { min-height: 500px; }
     </style>
@@ -42,17 +33,31 @@
 
 
 
+@endsection
+
+@push('scripts')
+<!-- Leaflet JavaScript -->
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin="">
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <!-- Include Leaflet JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
 
 <!-- Include Leaflet Search JS -->
 <script src="https://unpkg.com/leaflet-search@2.9.0/dist/leaflet-search.min.js"></script>
 
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
  // Initialize the map
     // var map = L.map('map').setView([51.505, -0.09], 13);
-    var map = L.map('mapid').setView( {{ config('leafletsetup.map_center_latitude') }},
-    {{ config('leafletsetup.map_center_longitude') }}],
+    var map = L.map('mapid').setView( [ {{ config('leafletsetup.map_center_latitude') }},
+    {{ config('leafletsetup.map_center_longitude') }} ],
     {{ config('leafletsetup.zoom_level') }} );
 
  // Add a tile layer (you can use any tile provider)
@@ -64,7 +69,7 @@
     }).addTo(map);
 
 // ikuti modul
-    axios.get('{{ route('api.places.index') }}')
+    axios.get("{{ route('api.places.index') }}")
     .then(function (response) {
         //console.log(response.data);
         L.geoJSON(response.data,{
@@ -85,10 +90,10 @@
             <?php
             foreach ($places as $key => $value) {
             ?>
-                {"loc":[<?= $value->latitude ?>,<?= $value->longitude ?>], "title": '<?= $value->place_name ?>'},
+                {"loc":[<?= $value->latitude ?>,<?= $value->longitude ?>], "title": "<?= $value->place_name ?>"},
             <?php } ?>
         ];
-    
+
     var markersLayer = new L.LayerGroup();	//layer contain searched elements
 
     map.addLayer(markersLayer);
@@ -112,8 +117,7 @@
         }
         // SIMPLE SEARCH LOCATION
         $('#textsearch').on('keyup', function(e) {
-
-        controlSearch.searchText( e.target.value );
+            controlSearch.searchText( e.target.value );
         });
 
 
@@ -130,7 +134,6 @@
     //     layer: searchLayer
     // }));
 </script>
-
-@endsection
+@endpush
 
 

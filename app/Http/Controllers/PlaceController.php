@@ -47,48 +47,48 @@ class PlaceController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Place $place)
     {
-        //
+        return view('places.detail', [
+            'place' => $place,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit(Place $place)
     {
-        //
+        return view('places.edit', [
+            'place' => $place,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(Request $request, Place $place)
     {
-        //
+        $this->validate($request, [
+            'place_name' => 'required|min:3',
+            'address'   => 'required|min:10',
+            'description' => 'required|min:10',
+            'longitude'  => 'required',
+            'latitude'  => 'required'
+        ]);
+
+        $place->update([
+            'place_name' => $request->place_name,
+            'address'  => $request->address,
+            'description' => $request->description,
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
+        ]);
+
+        notify()->info('Place has been updated');
+        return redirect()->route('places.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Place $place)
     {
-        //
+        $place->delete();
+        notify()->warning('Place has been deleted');
+        return redirect()->route('places.index');
     }
 }

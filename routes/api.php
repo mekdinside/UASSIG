@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PlaceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['as' => 'api.', 'namespace' => 'Api'], function () {
-    Route::get('places', 'PlaceController@index')->name('places.index');
+    Route::get('places', [PlaceController::class,'index'])->name('places.index');
 });
