@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Place as PlaceResource;
-use App\Models\Place;
+use App\Place;
 use Illuminate\Http\Request;
-
 
 class PlaceController extends Controller
 {
-    public function index(Request $request) {
+
+    public function index(Request $request)
+    {
         $places = Place::all();
 
         $geoJSONdata = $places->map(function ($place) {
@@ -33,7 +34,4 @@ class PlaceController extends Controller
             'features' => $geoJSONdata,
         ]);
     }
-
-
-
 }

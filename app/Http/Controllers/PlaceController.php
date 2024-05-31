@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 
 class PlaceController extends Controller
 {
-    public function index(Place $place)
+    public function index()
     {
-        return view('places.index');
+        $places = Place::all();
+        return view('places.index', compact('places'));
     }
 
 

@@ -24,7 +24,28 @@
                                 <th>Option</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            @foreach($places as $key => $place)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $place->place_name }}</td>
+                                <td>{{ $place->address }}</td>
+                                <td>{{ $place->description }}</td>
+                                <td>{{ $place->longitude }}</td>
+                                <td>{{ $place->latitude }}</td>
+                                <td>
+                                    <a href={{ route ('places.show', $place->id) }} class="btn btn-sm btn-info">Detail</a>
+                                    <a href="{{ route('places.edit', $place->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('places.destroy', $place->id) }}" method="POST" style="display:inline-block;">
+
+                                        @csrf
+                                        @method("DELETE")
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
